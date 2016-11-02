@@ -15,6 +15,8 @@ std::vector<std::vector<int>> optimalWeights;
 
 void clearData() {
     peopleWeights.clear();
+    weightsPerOneBus.clear();
+    optimalWeights.clear();
     busCount = 0;
     peopleCount = 0;
     busCapacity = 0;
