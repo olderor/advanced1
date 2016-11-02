@@ -1,3 +1,6 @@
+//  Created by olderor on 22.10.16.
+//  Copyright © 2016 olderor. All rights reserved.
+
 #include <fstream>
 #include <algorithm>
 #include <queue>
