@@ -61,7 +61,7 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-*.doc   diff=pandoc
-*.DOC   diff=pandoc
-*.docx  diff=pandoc
-*.DOCX  diff=pandoc
+*.doc diff=word
+*.DOC diff=word
+*.docx diff=word
+*.DOCX diff=word
