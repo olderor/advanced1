@@ -1,7 +1,7 @@
 # advanced1
 advanced home work - code review 22.10.16
 
-solution to problem "Buses"<br />
+solution to the problem "Buses"<br />
 https://contest.yandex.ru/contest/2923/problems/C/
 
 solution code is available here<br />
