@@ -4,20 +4,16 @@
 #include <algorithm>
 #include <queue>
 
-
-typedef unsigned long long ll;
-
-ll peopleWeights[502];
-ll weightsPerOneBus[502][502];
-ll optimalWeights[502][502];
+int peopleWeights[301];
+int weightsPerOneBus[301][301];
+int optimalWeights[301][101];
 
 int main() {
 
     std::ifstream cin("c.in");
     std::ofstream cout("c.out");
 
-    int busCount, peopleCount;
-    ll busCapacity;
+    int busCount, peopleCount, busCapacity;
     cin >> busCount >> busCapacity >> peopleCount;
 
     for (int i = 0; i < peopleCount; ++i) {
@@ -25,9 +21,9 @@ int main() {
     }
 
     for (int counterI = peopleCount - 1; counterI >= 0; --counterI) {
-        std::priority_queue<ll> currentWeights;
-        ll currentWeightsSum = 0;
-        ll currentWeightsSize = 0;
+        std::priority_queue<int> currentWeights;
+        int currentWeightsSum = 0;
+        int currentWeightsSize = 0;
 
         for (int counterJ = counterI; counterJ < peopleCount; ++counterJ) {
 
@@ -37,7 +33,7 @@ int main() {
                 ++currentWeightsSize;
             }
             else {
-                ll top = currentWeights.top();
+                int top = currentWeights.top();
                 if (top > peopleWeights[counterJ]) {
                     currentWeights.pop();
                     currentWeights.push(peopleWeights[counterJ]);
