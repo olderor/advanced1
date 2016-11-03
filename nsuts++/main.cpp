@@ -16,6 +16,7 @@ namespace stream_manager {
         std::istream &_Istr, 
         std::vector<int> &vector, 
         const int size) {
+
         vector.clear();
         vector.resize(size);
         for (int i = 0; i < size; ++i) {
@@ -23,7 +24,7 @@ namespace stream_manager {
         }
     }
 
-    void write_int(std::ostream& _Istr, const int data) {
+    void write_int(std::ostream &_Istr, const int data) {
         _Istr << data << std::endl;
     }
 
@@ -45,7 +46,6 @@ public:
             get_optimal_weights(bus_count, people_count, weights_per_one_bus);
 
         return optimal_weights[people_count - 1][bus_count - 1];
-
     }
 
 private:
@@ -115,6 +115,8 @@ private:
 
 
 int main() {
+    
+    // Making input and output fast.
     std::ios_base::sync_with_stdio(false);    std::cin.tie(nullptr);
 
     int bus_count, people_count, bus_capacity;
