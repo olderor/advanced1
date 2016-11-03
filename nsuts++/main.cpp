@@ -6,104 +6,110 @@
 #include <queue>
 #include <vector>
 
-int busCount, peopleCount, busCapacity;
+namespace stream_manager {
 
-std::vector<int>              peopleWeights;
-std::vector<std::vector<int>> weightsPerOneBus;
-std::vector<std::vector<int>> optimalWeights;
-
-
-void clearData() {
-    peopleWeights.clear();
-    weightsPerOneBus.clear();
-    optimalWeights.clear();
-    busCount = 0;
-    peopleCount = 0;
-    busCapacity = 0;
-}
-
-void readData(std::istream& _Istr) {
-
-    clearData();
-
-    _Istr >> busCount >> busCapacity >> peopleCount;
-
-    peopleWeights.resize(peopleCount);
-
-    for (int i = 0; i < peopleCount; ++i) {
-        _Istr >> peopleWeights[i];
+    void read_int(std::istream &_Istr, int &data) {
+        _Istr >> data;
     }
-}
 
-void setWeightsPerOneBus() {
+    void read_vector(std::istream &_Istr, std::vector<int> &vector, const int size) {
+        vector.clear();
+        vector.resize(size);
+        for (int i = 0; i < size; ++i) {
+            _Istr >> vector[i];
+        }
+    }
 
-    weightsPerOneBus.clear();
-    weightsPerOneBus.resize(peopleCount, std::vector<int>(peopleCount));
+    void write_int(std::ostream& _Istr, const int data) {
+        _Istr << data << std::endl;
+    }
 
-    for (int peopleStartIndex = peopleCount - 1; peopleStartIndex >= 0; --peopleStartIndex) {
+};
 
-        std::priority_queue<int> currentWeights;
-        int currentWeightsSum = 0;
-        int currentWeightsSize = 0;
+static struct problem_solver {
+public:
 
-        for (int peopleEndIndex = peopleStartIndex; peopleEndIndex < peopleCount; ++peopleEndIndex) {
+    static int solve(const int bus_count, const int bus_capacity, const int people_count, const std::vector<int> people_weights) {
+        const std::vector<std::vector<int>> weights_per_one_bus = get_weights_per_one_bus(bus_capacity, people_count, people_weights);
+        const std::vector<std::vector<int>> optimal_weights = get_optimal_weights(bus_count, people_count, weights_per_one_bus);
+        return optimal_weights[people_count - 1][bus_count - 1];
+    }
 
-            if (peopleWeights[peopleEndIndex] <= busCapacity - currentWeightsSum) {
-                currentWeights.push(peopleWeights[peopleEndIndex]);
-                currentWeightsSum += peopleWeights[peopleEndIndex];
-                ++currentWeightsSize;
+private:
+    static std::vector<std::vector<int>> get_weights_per_one_bus(const int bus_capacity, const int people_count, const std::vector<int> people_weights) {
+
+        std::vector<std::vector<int>> weights_per_one_bus(people_count, std::vector<int>(people_count));
+
+        for (int people_start_index = people_count - 1; people_start_index >= 0; --people_start_index) {
+
+            std::priority_queue<int> current_weights;
+            int current_weights_sum = 0;
+            int current_weights_size = 0;
+
+            for (int people_end_index = people_start_index; people_end_index < people_count; ++people_end_index) {
+
+                if (people_weights[people_end_index] <= bus_capacity - current_weights_sum) {
+                    current_weights.push(people_weights[people_end_index]);
+                    current_weights_sum += people_weights[people_end_index];
+                    ++current_weights_size;
+                }
+                else {
+                    const int top = current_weights.top();
+                    if (top > people_weights[people_end_index]) {
+                        current_weights.pop();
+                        current_weights.push(people_weights[people_end_index]);
+                        current_weights_sum += people_weights[people_end_index] - top;
+                    }
+                }
+
+                weights_per_one_bus[people_start_index][people_end_index] = current_weights_size;
             }
-            else {
-                const int top = currentWeights.top();
-                if (top > peopleWeights[peopleEndIndex]) {
-                    currentWeights.pop();
-                    currentWeights.push(peopleWeights[peopleEndIndex]);
-                    currentWeightsSum += peopleWeights[peopleEndIndex] - top;
+        }
+        
+        return weights_per_one_bus;
+    }
+
+    static std::vector<std::vector<int>> get_optimal_weights(const int bus_count, const int people_count, const std::vector<std::vector<int>> weights_per_one_bus) {
+
+        std::vector<std::vector<int>> optimal_weights(people_count, std::vector<int>(bus_count, 0));
+
+        for (int j = 0; j < bus_count; ++j) {
+            for (int i = people_count - 1; i >= 0; --i) {
+
+                optimal_weights[i][j] = std::max(optimal_weights[i][j], weights_per_one_bus[0][i]);
+
+                if (j == 0) {
+                    continue;
+                }
+
+                for (int k = 0; k < i; ++k) {
+                    optimal_weights[i][j] = std::max(optimal_weights[i][j],
+                        optimal_weights[k][j - 1] + weights_per_one_bus[k + 1][i]);
                 }
             }
-
-            weightsPerOneBus[peopleStartIndex][peopleEndIndex] = currentWeightsSize;
         }
+
+        return optimal_weights;
     }
-}
+};
 
-void setOptimalWeights() {
-
-    optimalWeights.clear();
-    optimalWeights.resize(peopleCount, std::vector<int>(busCount, 0));
-
-    for (int j = 0; j < busCount; ++j) {
-        for (int i = peopleCount - 1; i >= 0; --i) {
-
-            optimalWeights[i][j] = std::max(optimalWeights[i][j], weightsPerOneBus[0][i]);
-
-            if (j == 0) {
-                continue;
-            }
-
-            for (int k = 0; k < i; ++k) {
-                optimalWeights[i][j] = std::max(optimalWeights[i][j],
-                    optimalWeights[k][j - 1] + weightsPerOneBus[k + 1][i]);
-            }
-        }
-    }
-}
-
-int solveProblem() {
-    setWeightsPerOneBus();
-    setOptimalWeights();
-    return optimalWeights[peopleCount - 1][busCount - 1];
-}
-
-void writeData(std::ostream& _Istr, int data) {
-    _Istr << data << std::endl;
-}
 
 int main() {
+    std::ios_base::sync_with_stdio(false);    std::cin.tie(nullptr);
 
-    readData(std::cin);
-    const int answer = solveProblem();
-    writeData(std::cout, answer);
+    int bus_count, people_count, bus_capacity;
+
+    stream_manager::read_int(std::cin, bus_count);
+    stream_manager::read_int(std::cin, bus_capacity);
+    stream_manager::read_int(std::cin, people_count);
+
+    std::vector<int> people_weights;
+
+    stream_manager::read_vector(std::cin, people_weights, people_count);
+
+    const int answer = problem_solver::solve(bus_count, bus_capacity, people_count, people_weights);
+
+    stream_manager::write_int(std::cout, answer);
 
     return 0;
 }
