@@ -114,10 +114,14 @@ private:
 };
 
 
+// Making input and output fast.
+void set_stream_settings() {
+    std::ios_base::sync_with_stdio(false);    std::cin.tie(nullptr);
+}
+
 int main() {
     
-    // Making input and output fast.
-    std::ios_base::sync_with_stdio(false);    std::cin.tie(nullptr);
+    set_stream_settings();
 
     int bus_count, people_count, bus_capacity;
 
