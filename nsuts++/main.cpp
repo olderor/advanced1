@@ -12,7 +12,10 @@ namespace stream_manager {
         _Istr >> data;
     }
 
-    void read_vector(std::istream &_Istr, std::vector<int> &vector, const int size) {
+    void read_vector(
+        std::istream &_Istr, 
+        std::vector<int> &vector, 
+        const int size) {
         vector.clear();
         vector.resize(size);
         for (int i = 0; i < size; ++i) {
@@ -29,16 +32,30 @@ namespace stream_manager {
 static struct problem_solver {
 public:
 
-    static int solve(const int bus_count, const int bus_capacity, const int people_count, const std::vector<int> people_weights) {
-        const std::vector<std::vector<int>> weights_per_one_bus = get_weights_per_one_bus(bus_capacity, people_count, people_weights);
-        const std::vector<std::vector<int>> optimal_weights = get_optimal_weights(bus_count, people_count, weights_per_one_bus);
+    static int solve(
+        const int bus_count, 
+        const int bus_capacity, 
+        const int people_count, 
+        const std::vector<int> people_weights) {
+
+        const std::vector<std::vector<int>> weights_per_one_bus = 
+            get_weights_per_one_bus(bus_capacity, people_count, people_weights);
+
+        const std::vector<std::vector<int>> optimal_weights = 
+            get_optimal_weights(bus_count, people_count, weights_per_one_bus);
+
         return optimal_weights[people_count - 1][bus_count - 1];
+
     }
 
 private:
-    static std::vector<std::vector<int>> get_weights_per_one_bus(const int bus_capacity, const int people_count, const std::vector<int> people_weights) {
+    static std::vector<std::vector<int>> get_weights_per_one_bus(
+        const int bus_capacity, 
+        const int people_count, 
+        const std::vector<int> people_weights) {
 
-        std::vector<std::vector<int>> weights_per_one_bus(people_count, std::vector<int>(people_count));
+        std::vector<std::vector<int>> weights_per_one_bus(
+            people_count, std::vector<int>(people_count));
 
         for (int people_start_index = people_count - 1; people_start_index >= 0; --people_start_index) {
 
@@ -69,7 +86,10 @@ private:
         return weights_per_one_bus;
     }
 
-    static std::vector<std::vector<int>> get_optimal_weights(const int bus_count, const int people_count, const std::vector<std::vector<int>> weights_per_one_bus) {
+    static std::vector<std::vector<int>> get_optimal_weights(
+        const int bus_count, 
+        const int people_count, 
+        const std::vector<std::vector<int>> weights_per_one_bus) {
 
         std::vector<std::vector<int>> optimal_weights(people_count, std::vector<int>(bus_count, 0));
 
