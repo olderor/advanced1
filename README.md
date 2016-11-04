@@ -10,7 +10,7 @@ solution code is available here<br />
 https://github.com/olderor/advanced1/blob/master/nsuts%2B%2B/main.cpp<br />
 </p>
 <p>
-code review is available here<br />
+detailed algorithm is available here<br />
 https://github.com/olderor/advanced1/blob/master/review.docx<br />
 </p>
 Created by olderor (Yevchenko Bohdan) on 22.10.16.<br />
