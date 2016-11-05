@@ -15,7 +15,7 @@ public:
     static void read_vector(
         std::istream &_Istr, 
         std::vector<int> &vector, 
-        const int size) {
+        const int &size) {
 
         vector.clear();
         vector.resize(size);
@@ -24,7 +24,7 @@ public:
         }
     }
 
-    static void write_int(std::ostream &_Istr, const int data) {
+    static void write_int(std::ostream &_Istr, const int &data) {
         _Istr << data << std::endl;
     }
 };
@@ -32,10 +32,10 @@ public:
 struct problem_solver {
 public:
     static int solve(
-        const int bus_count, 
-        const int bus_capacity, 
-        const int people_count, 
-        const std::vector<int> people_weights) {
+        const int &bus_count, 
+        const int &bus_capacity, 
+        const int &people_count, 
+        const std::vector<int> &people_weights) {
 
         const std::vector< std::vector<int> > weights_per_one_bus = 
             get_weights_per_one_bus(bus_capacity, people_count, people_weights);
@@ -48,9 +48,9 @@ public:
 
 private:
     static std::vector< std::vector<int> > get_weights_per_one_bus(
-        const int bus_capacity, 
-        const int people_count, 
-        const std::vector<int> people_weights) {
+        const int &bus_capacity, 
+        const int &people_count, 
+        const std::vector<int> &people_weights) {
 
         std::vector< std::vector<int> > weights_per_one_bus(
             people_count, std::vector<int>(people_count));
@@ -86,9 +86,9 @@ private:
     }
 
     static std::vector< std::vector<int> > get_optimal_weights(
-        const int bus_count, 
-        const int people_count, 
-        const std::vector< std::vector<int> > weights_per_one_bus) {
+        const int &bus_count, 
+        const int &people_count, 
+        const std::vector< std::vector<int> > &weights_per_one_bus) {
 
         std::vector< std::vector<int> > optimal_weights(people_count, 
             std::vector<int>(bus_count, 0));
