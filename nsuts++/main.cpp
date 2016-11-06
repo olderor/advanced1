@@ -55,7 +55,7 @@ public:
     // parameter const int bus_capacity - integer, which contains given capacity of buses.
     // parameter const int people_count - integer, which contains given number of passengers.
     // parameter const std::vector<int> &people_weights - address of the vector, which stores weights of each passenger.
-    // return int - answer to the problem - the maximum number of passengers, that can use each of the buses.
+    // return int - answer to the problem - the maximum number of passengers, that can use buses.
     static int solve(
         const int bus_count, 
         const int bus_capacity, 
