@@ -6,16 +6,30 @@
 #include <queue>
 #include <vector>
 
+// Stream manager structure.
+// Use for reading/writing different data from/to the stream.
+// It makes processing input and output easier.
 struct stream_manager {
 public:
+    
+    // function read_int - procedure for reading an integer from the stream.
+    // parameter std::istream &_Istr - address of any input stream.
+    // parameter int &data - address of the integer, where should be stored input data.
     static void read_int(std::istream &_Istr, int &data) {
         _Istr >> data;
     }
-
+    
+    // function read_vector - procedure for reading an vector of the size from the stream.
+    // Before reading the data, vector is going to be cleaned.
+    // So do not forget, that all the data stored in this vector will be lost.
+    // parameter std::istream &_Istr - address of any input stream.
+    // parameter std::vector<int> &vector - address of the vector, where should be stored input data.
+    // parameter const int size - number of times to read integers from the stream.
+    // Also it is the new size of the vector.
     static void read_vector(
         std::istream &_Istr, 
         std::vector<int> &vector, 
-        const int &size) {
+        const int size) {
 
         vector.clear();
         vector.resize(size);
@@ -23,18 +37,29 @@ public:
             _Istr >> vector[i];
         }
     }
-
+    
+    // function write_int - procedure for writing an integer to the stream.
+    // parameter std::ostream &_Istr - address of any output stream.
+    // parameter const int data - integer, the value of which should be written to the stream.
     static void write_int(std::ostream &_Istr, const int &data) {
         _Istr << data << std::endl;
     }
 };
 
+// Problem solver structure.
+// Use for solving and getting the answer to the given problem.
 struct problem_solver {
 public:
+    // function solve - function for getting correct answer to the problem.
+    // parameter const int bus_count - integer, which contains given number of buses.
+    // parameter const int bus_capacity - integer, which contains given capacity of buses.
+    // parameter const int people_count - integer, which contains given number of passengers.
+    // parameter const std::vector<int> &people_weights - address of the vector, which stores weights of each passenger.
+    // return int - answer to the problem - the maximum number of passengers, that can use each of the buses.
     static int solve(
-        const int &bus_count, 
-        const int &bus_capacity, 
-        const int &people_count, 
+        const int bus_count, 
+        const int bus_capacity, 
+        const int people_count, 
         const std::vector<int> &people_weights) {
 
         const std::vector< std::vector<int> > weights_per_one_bus = 
@@ -47,9 +72,15 @@ public:
     }
 
 private:
+    // function get_weights_per_one_bus - function for getting maximum number of passengers
+    // on different passengers intervals using optimal passengers locations.
+    // parameter const int bus_capacity - integer, which contains given capacity of buses.
+    // parameter const int people_count - integer, which contains given number of passengers.
+    // parameter const std::vector<int> &people_weights - address of the vector, which stores weights of each passenger.
+    // return std::vector< std::vector<int> > - vector that contains maximum number of passengers on different intervals.
     static std::vector< std::vector<int> > get_weights_per_one_bus(
-        const int &bus_capacity, 
-        const int &people_count, 
+        const int bus_capacity, 
+        const int people_count, 
         const std::vector<int> &people_weights) {
 
         std::vector< std::vector<int> > weights_per_one_bus(
@@ -84,10 +115,16 @@ private:
         
         return weights_per_one_bus;
     }
-
+    
+    // function get_optimal_weights - function for getting maximum number of passengers using different number of buses.
+    // parameter const int bus_count - integer, which contains the number of buses.
+    // parameter const int people_count - integer, which contains given number of passengers.
+    // parameter const std::vector< std::vector<int> > &weights_per_one_bus - address of the vector, which stores
+    // maximum number of passengers on different passengers intervals.
+    // return std::vector< std::vector<int> > - vector that contains desired data.
     static std::vector< std::vector<int> > get_optimal_weights(
-        const int &bus_count, 
-        const int &people_count, 
+        const int bus_count, 
+        const int people_count, 
         const std::vector< std::vector<int> > &weights_per_one_bus) {
 
         std::vector< std::vector<int> > optimal_weights(people_count, 
@@ -110,7 +147,13 @@ private:
     }
 };
 
-
+// function read_input - procedure for reading entire input data, which is needed for solving the problem.
+// parameter std::istream &_Istr - address of any input stream.
+// parameter int &bus_count - address of the integer, in which should be written the number of buses.
+// parameter int &bus_capacity - address of the integer, in which should be written the capacity of buses.
+// parameter int &people_count - address of the integer, in which should be written the number of passengers.
+// parameter std::vector<int> &people_weights - address of the vector, in which should be written
+// weight of each passenger.
 void read_input(
     std::istream &_Istr,
     int &bus_count, 
@@ -124,6 +167,9 @@ void read_input(
     stream_manager::read_vector(_Istr, people_weights, people_count);
 }
 
+// function write_output - procedure for outputting the answer.
+// parameter std::ostream &_Istr - address of any output stream.
+// parameter const int answert - integer, value of which is the answer to the problem.
 void write_output(std::ostream &_Istr, const int answer) {
     stream_manager::write_int(_Istr, answer);
 }
